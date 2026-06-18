@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SHOW ME — speed scavenger hunt</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- marquee bulb frame -->
+  <div class="marquee" aria-hidden="true"></div>
+
+  <main class="stage">
+    <!-- ============ START SCREEN ============ -->
+    <section id="screen-start" class="screen is-active">
+      <p class="kicker">on-device vision · no cloud · #30for30</p>
+      <h1 class="logo">SHOW<span class="logo-me">ME</span></h1>
+      <p class="tagline">The AI calls it out. You hold it up.<br />Beat the clock or the curtain falls.</p>
+      <button id="btn-start" class="btn btn-primary">
+        <span class="btn-label">Start the show</span>
+        <span class="btn-sub" id="start-sub">grant camera access</span>
+      </button>
+      <ul class="rules">
+        <li><b>1.</b> The marquee shows what to find.</li>
+        <li><b>2.</b> Hold the real object up to your camera.</li>
+        <li><b>3.</b> Find it fast — leftover time becomes points.</li>
+      </ul>
+      <p class="best">Best score: <span id="best-start">0</span></p>
+    </section>
+
+    <!-- ============ GAME SCREEN ============ -->
+    <section id="screen-game" class="screen">
+      <header class="hud">
+        <div class="hud-cell">
+          <span class="hud-label">Score</span>
+          <span class="hud-value" id="hud-score">0</span>
+        </div>
+        <div class="hud-cell hud-streak" id="hud-streak-cell">
+          <span class="hud-label">Combo</span>
+          <span class="hud-value" id="hud-streak">0</span>
+        </div>
+        <div class="hud-cell">
+          <span class="hud-label">Found</span>
+          <span class="hud-value" id="hud-found">0</span>
+        </div>
+      </header>
+
+      <div class="call">
+        <span class="call-prefix">show me</span>
+        <span class="call-target" id="call-target">a cup</span>
+      </div>
+
+      <div class="viewport">
+        <video id="video" playsinline muted></video>
+        <canvas id="overlay"></canvas>
+        <div class="timer-ring">
+          <svg viewBox="0 0 120 120">
+            <circle class="ring-track" cx="60" cy="60" r="54" />
+            <circle class="ring-fill" id="ring-fill" cx="60" cy="60" r="54" />
+          </svg>
+          <span class="timer-num" id="timer-num">20</span>
+        </div>
+        <div class="flash" id="flash"></div>
+        <div class="hint" id="hint"></div>
+      </div>
+
+      <div class="controls">
+        <button id="btn-skip" class="btn btn-ghost">Skip <span class="skip-cost">−time</span></button>
+      </div>
+    </section>
+
+    <!-- ============ GAME OVER SCREEN ============ -->
+    <section id="screen-over" class="screen">
+      <h2 class="over-title">CURTAIN</h2>
+      <div class="over-score">
+        <span class="over-num" id="over-score">0</span>
+        <span class="over-label">points</span>
+      </div>
+      <p class="over-stats" id="over-stats"></p>
+      <p class="over-best" id="over-best"></p>
+      <button id="btn-again" class="btn btn-primary"><span class="btn-label">Encore</span></button>
+    </section>
+  </main>
+
+  <!-- ============ LOADING OVERLAY ============ -->
+  <div id="loader" class="loader">
+    <div class="loader-spin"></div>
+    <p class="loader-text" id="loader-text">Warming up the AI…</p>
+  </div>
+
+  <!-- TensorFlow.js + COCO-SSD object detection (runs entirely on-device) -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.20.0/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.3/dist/coco-ssd.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
